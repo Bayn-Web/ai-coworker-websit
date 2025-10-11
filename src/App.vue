@@ -245,7 +245,7 @@ class GridSystem {
 
     this.init();
     this.resize();
-    window.addEventListener("resize", this.resize.bind(this));
+    window.addEventListener("resize", this.resize);
   }
 
   init() {
@@ -373,7 +373,7 @@ onBeforeUnmount(() => {
   if (animationFrameId) {
     cancelAnimationFrame(animationFrameId);
   }
-  window.removeEventListener("resize", grid?.resize);
+  window.removeEventListener("resize", grid!.resize);
 });
 </script>
 

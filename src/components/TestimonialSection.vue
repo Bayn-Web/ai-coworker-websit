@@ -352,7 +352,16 @@ const createGlobe = () => {
   window.addEventListener("resize", resizeCanvas);
 
   // 地球点阵
-  const points: any[] = [];
+  const points: {
+    x: number;
+    y: number;
+    z: number;
+    screenX: number;
+    screenY: number;
+    size: number;
+    brightness: number;
+    pulse: number;
+  }[] = [];
   const pointCount = 400;
 
   // 创建点阵（模拟地球经纬度分布）
@@ -464,7 +473,16 @@ const createHologramField = () => {
   window.addEventListener("resize", resizeCanvas);
 
   // 数据流粒子系统
-  const particles: any[] = [];
+  const particles: {
+    x: number;
+    y: number;
+    z: number;
+    size: number;
+    speed: number;
+    color: string;
+    trail: { x: number; y: number; size: number }[];
+    maxTrail: number;
+  }[] = [];
   const particleCount = 200;
 
   // 创建粒子
@@ -482,7 +500,7 @@ const createHologramField = () => {
   }
 
   // 数据节点网络
-  const nodes: any[] = [];
+  const nodes: { x: number; y: number; size: number; pulse: number; connections: number }[] = [];
   const nodeCount = 30;
 
   for (let i = 0; i < nodeCount; i++) {
