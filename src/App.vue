@@ -12,7 +12,7 @@
     </div>
 
     <header
-      class="fixed w-full z-50 backdrop-blur-xl bg-black/30 py-4 px-6 border-b border-gray-800/50"
+      class="fixed w-full z-50 backdrop-blur-xl bg-black/30 py-4 px-4 sm:px-6 border-b border-gray-800/50 break-keep"
     >
       <nav class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="text-2xl font-extrabold tracking-wider">
@@ -25,17 +25,20 @@
             CoWorker
           </span>
         </div>
-        <div class="flex items-center space-x-8">
+        <div class="flex items-center space-x-4 sm:space-x-6 md:space-x-8">
           <a
             href="#features"
-            class="hover:text-cyan-400 transition-all duration-300 relative group"
+            class="text-sm md:text-base hover:text-cyan-400 transition-all duration-300 relative group"
           >
             功能
             <span
               class="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyan-400 transition-all duration-300 group-hover:w-full"
             ></span>
           </a>
-          <a href="#demo" class="hover:text-purple-400 transition-all duration-300 relative group">
+          <a
+            href="#demo"
+            class="text-sm md:text-base hover:text-purple-400 transition-all duration-300 relative group"
+          >
             演示
             <span
               class="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-400 transition-all duration-300 group-hover:w-full"
@@ -43,7 +46,7 @@
           </a>
           <a
             href="#testimonials"
-            class="hover:text-pink-400 transition-all duration-300 relative group"
+            class="text-sm md:text-base hover:text-pink-400 transition-all duration-300 relative group"
           >
             评价
             <span
