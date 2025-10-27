@@ -210,7 +210,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Analytics } from '@vercel/analytics/vue';
+import { Analytics } from "@vercel/analytics/vue";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import HeroSection from "@/components/HeroSection.vue";
 import FeatureSection from "@/components/FeatureSection.vue";

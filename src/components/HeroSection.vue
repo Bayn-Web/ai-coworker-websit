@@ -51,7 +51,9 @@
           >
             WORKER
           </span>
-          <span class="absolute inset-2 bg-blue-500 blur-sm opacity-10 animate-pulse scale-x-50 rounded-full"></span>
+          <span
+            class="absolute inset-2 bg-blue-500 blur-sm opacity-10 animate-pulse scale-x-50 rounded-full"
+          ></span>
         </h1>
 
         <!-- 副标题全息效果 -->
@@ -110,13 +112,7 @@
       </div>
     </div>
 
-    <!-- 边框装饰 -->
-    <div
-      class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent"
-    ></div>
-    <div
-      class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent"
-    ></div>
+    <canvas ref="cursorCanvas" id="cursorCanvas" width="1920" height="1080"></canvas>
   </section>
 </template>
 
@@ -125,7 +121,36 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const particlesContainer = ref<HTMLElement | null>(null);
 let animationFrameId: number;
+const cursorCanvas = ref<HTMLCanvasElement | null>(null);
 
+let tubesApp: {
+  tubes: {
+    setColors: (colors: string[]) => void;
+    setLightsColors: (colors: string[]) => void;
+  };
+  dispose: () => void;
+} | null = null; // 用于存储 TubesCursor 实例
+
+// 添加随机颜色生成函数
+function randomColors(count: number): string[] {
+  return new Array(count).fill(0).map(
+    () =>
+      "#" +
+      Math.floor(Math.random() * 16777215)
+        .toString(16)
+        .padStart(6, "0")
+  );
+}
+
+// 添加点击事件处理函数
+const handleCanvasClick = () => {
+  if (tubesApp) {
+    const colors = randomColors(3);
+    const lightsColors = randomColors(4);
+    tubesApp.tubes.setColors(colors);
+    tubesApp.tubes.setLightsColors(lightsColors);
+  }
+};
 // 创建粒子背景
 const createParticles = () => {
   if (!particlesContainer.value) return;
@@ -232,7 +257,47 @@ onMounted(() => {
   onBeforeUnmount(() => {
     if (cleanup) cleanup();
     cancelAnimationFrame(animationFrameId);
+
+    document.body.removeEventListener("click", handleCanvasClick);
+    // 清理 TubesCursor 资源
+    if (tubesApp) {
+      tubesApp.dispose();
+    }
   });
+
+  // 延迟初始化 TubesCursor
+  setTimeout(async () => {
+    try {
+      // 动态导入 TubesCursor
+      const TubesCursorModule = await import("@/plugins/tube.mjs");
+      const TubesCursor = TubesCursorModule.default || TubesCursorModule;
+
+      if (cursorCanvas.value) {
+        // 初始化 TubesCursor
+        tubesApp = TubesCursor(cursorCanvas.value, {
+          tubes: {
+            colors: ["#f967fb", "#53bc28", "#6958d5"],
+            lights: {
+              intensity: 200,
+              colors: ["#83f36e", "#fe8a2e", "#ff008a", "#60aed5"],
+            },
+          },
+          // 添加渲染器选项以优化性能
+          renderer: {
+            antialias: true,
+            alpha: true,
+            // 限制渲染尺寸
+            preserveDrawingBuffer: false,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Failed to initialize TubesCursor:", error);
+    }
+  }, 100);
+
+  // 添加点击事件监听器
+  document.body.addEventListener("click", handleCanvasClick);
 });
 </script>
 
@@ -565,5 +630,15 @@ onMounted(() => {
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+#cursorCanvas {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  opacity: 0.4;
 }
 </style>
