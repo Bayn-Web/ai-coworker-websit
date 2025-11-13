@@ -93,7 +93,7 @@
     </header>
 
     <main class="pt-20 relative z-10">
-      <HeroSection />
+      <HeroSection @scroll-to-contact="scrollToContact" />
 
       <!-- 分割线 -->
       <div class="relative py-20">
@@ -363,6 +363,14 @@ const animate = () => {
     grid.animate();
   }
   animationFrameId = requestAnimationFrame(animate);
+};
+
+// 滚动到联系卡片
+const scrollToContact = () => {
+  const contactSection = document.getElementById('contact');
+  if (contactSection) {
+    contactSection.scrollIntoView({ behavior: 'smooth' });
+  }
 };
 
 onMounted(() => {
